@@ -79,7 +79,7 @@ public class PostRequest {
                 response.append('\r');
             }
             rd.close();
-            jsonReponse.put("data", response.toString());
+            jsonReponse.put("data", new JSONObject(response.toString()));
             return jsonReponse;
 
         } catch (Exception e) {
