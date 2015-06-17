@@ -38,6 +38,7 @@ public class PostRequest {
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type",
                     "application/x-www-form-urlencoded");
+            connection.setRequestProperty("Authorization", "Bearer " + token);
 
             //Setting url parameters for post request
             String urlParameters = null;
@@ -64,6 +65,7 @@ public class PostRequest {
             //Check if response code is 200 OK
             int status = connection.getResponseCode();
             jsonReponse.put("status", status);
+
             if(status != 200){
                 return jsonReponse;
             }
@@ -79,6 +81,7 @@ public class PostRequest {
                 response.append('\r');
             }
             rd.close();
+
             jsonReponse.put("data", new JSONObject(response.toString()));
             return jsonReponse;
 
