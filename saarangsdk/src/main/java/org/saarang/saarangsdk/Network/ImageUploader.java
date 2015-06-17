@@ -62,7 +62,7 @@ public class ImageUploader {
                 dos = new DataOutputStream(conn.getOutputStream());
 
                 dos.writeBytes(twoHyphens + boundary + lineEnd);
-                dos.writeBytes("Content-Disposition: form-data; file=\"uploaded_file\";filename=\""
+                dos.writeBytes("Content-Disposition: form-data; name=\"uploaded_file\";filename=\""
                         + fileName + "\"" + lineEnd);
 
                 dos.writeBytes(lineEnd);
