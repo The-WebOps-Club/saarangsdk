@@ -53,6 +53,7 @@ public class PostRequest {
             connection.setRequestProperty("Content-Length", "" + Integer.toString(urlParameters.getBytes().length));
             connection.setUseCaches (false);
             connection.setDoInput(true);
+            connection.setConnectTimeout(15000);
             connection.setDoOutput(true);
 
             //Send request
