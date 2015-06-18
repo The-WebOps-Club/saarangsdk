@@ -47,7 +47,7 @@ public class PostRequest {
                 connection.setRequestProperty("Content-Length", "" +
                         Integer.toString(urlParameters.getBytes().length));
             }
-
+            Log.d("post   req ",urlParameters);
             //Connection properties
             connection.setRequestProperty("Content-Language", "en-US");
             connection.setRequestProperty("Content-Length", "" + Integer.toString(urlParameters.getBytes().length));
