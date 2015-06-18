@@ -3,6 +3,9 @@ package org.saarang.saarangsdk.Network;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -11,7 +14,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -21,7 +23,7 @@ public class ImageUploader {
 
     public static String LOG_TAG = "ImageUploader";
 
-    public static void execute(String sourceFileUri){
+    public static JSONObject execute(String urlString, String sourceFileUri){
 
         String fileName = sourceFileUri;
 
@@ -35,34 +37,45 @@ public class ImageUploader {
         byte[] buffer;
         int maxBufferSize = 1 * 1024 * 1024;
         File sourceFile = new File(sourceFileUri);
+        int status = 999;
+        JSONObject json = new JSONObject();
+        try {
+            json.put("status", status);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         if (!sourceFile.isFile()) {
             Log.d(LOG_TAG, "Source File not exist " );
-            return;
+            return json;
         }
         else {
             try {
 
+                Long time = System.currentTimeMillis();
                 // open a URL connection to the Servlet
                 FileInputStream fileInputStream = new FileInputStream(sourceFile);
-                URL url = new URL("http://erptest.saarang.org/api/uploads");
+                URL url = new URL(urlString);
                 Log.d(LOG_TAG, "Url " + url.toString());
                 Log.d(LOG_TAG, fileName);
                 // Open a HTTP  connection to  the URL
                 conn = (HttpURLConnection) url.openConnection();
                 conn.setDoInput(true); // Allow Inputs
                 conn.setDoOutput(true); // Allow Outputs
+                conn.setConnectTimeout(30000);
                 conn.setUseCaches(false); // Don't use a Cached Copy
                 conn.setRequestMethod("POST");
-//                conn.setRequestProperty("Connection", "Keep-Alive");
+                conn.setRequestProperty("Connection", "Keep-Alive");
 //                conn.setRequestProperty("ENCTYPE", "multipart/form-data");
                 conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
-                conn.setRequestProperty("uploaded_file", fileName);
+                conn.setRequestProperty("file", fileName);
 
                 dos = new DataOutputStream(conn.getOutputStream());
+                Log.d(LOG_TAG, fileName);
+
 
                 dos.writeBytes(twoHyphens + boundary + lineEnd);
-                dos.writeBytes("Content-Disposition: form-data; name=\"uploaded_file\";filename=\""
+                dos.writeBytes("Content-Disposition: form-data; name=\"file\";filename=\""
                         + fileName + "\"" + lineEnd);
 
                 dos.writeBytes(lineEnd);
@@ -93,12 +106,23 @@ public class ImageUploader {
                 serverResponseCode = conn.getResponseCode();
                 String serverResponseMessage = conn.getResponseMessage();
 
-                Log.i("uploadFile", "HTTP Response is : "
-                        + serverResponseMessage + ": " + serverResponseCode);
+                Log.d(LOG_TAG, "HTTP Response is : "
+                        + serverResponseCode + " " + serverResponseMessage + " in " + (System.currentTimeMillis() - time) + "ms");
+                json.put("status", serverResponseCode);
 
                 if(serverResponseCode == 200){
-
-
+                    //Get Response
+                    InputStream is = conn.getInputStream();
+                    BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+                    String line;
+                    StringBuffer response = new StringBuffer();
+                    while((line = rd.readLine()) != null) {
+                        response.append(line);
+                        response.append('\r');
+                    }
+                    rd.close();
+                    json.put("data", new JSONObject(response.toString()));
+                    Log.d(LOG_TAG, response.toString());
                 }
 
                 //close the streams //
@@ -106,14 +130,11 @@ public class ImageUploader {
                 dos.flush();
                 dos.close();
 
-            } catch (MalformedURLException ex) {
-
-
-            } catch (Exception e) {
-
+            }  catch (Exception e) {
+                e.printStackTrace();
 
             }
-            return;
+            return json;
 
         }
     }
@@ -130,7 +151,7 @@ public class ImageUploader {
 
             // Setup the request:
             HttpURLConnection httpUrlConnection = null;
-            URL url = new URL("http://erptest.saarang.org/api/uploads");
+            URL url = new URL("http://10.42.0.77:9000/api/uploads");
             httpUrlConnection = (HttpURLConnection) url.openConnection();
             httpUrlConnection.setUseCaches(false);
             httpUrlConnection.setDoOutput(true);
