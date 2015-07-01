@@ -26,12 +26,14 @@ public class PostRequest {
     public static JSONObject execute(String urlString,ArrayList<PostParam> params, String token){
 
         URL url;
+        int status = 989;
         HttpURLConnection connection = null;
+
+        //Dummy response
+        JSONObject jsonResponse = new JSONObject();
         try {
 
-            //Dummy response
-            JSONObject jsonResponse = new JSONObject();
-
+            jsonResponse.put("status", status);
 
             //Create connection
             url = new URL(urlString);
@@ -65,7 +67,7 @@ public class PostRequest {
             wr.close ();
 
             //Check if response code is 200 OK
-            int status = connection.getResponseCode();
+            status = connection.getResponseCode();
             jsonResponse.put("status", status);
 
             if(status != 200){
@@ -93,7 +95,7 @@ public class PostRequest {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return jsonResponse;
         } finally {
 
             if(connection != null) {

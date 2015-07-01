@@ -23,7 +23,7 @@ public class ImageUploader {
 
     public static String LOG_TAG = "ImageUploader";
 
-    public static JSONObject execute(String urlString, String sourceFileUri){
+    public static JSONObject execute(String urlString, String sourceFileUri, String token){
 
         String fileName = sourceFileUri;
 
@@ -68,6 +68,7 @@ public class ImageUploader {
                 conn.setRequestProperty("Connection", "Keep-Alive");
 //                conn.setRequestProperty("ENCTYPE", "multipart/form-data");
                 conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
+                conn.setRequestProperty("Authorization", "Bearer " + token);
                 conn.setRequestProperty("file", fileName);
 
                 dos = new DataOutputStream(conn.getOutputStream());
