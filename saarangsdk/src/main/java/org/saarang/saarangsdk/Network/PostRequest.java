@@ -2,6 +2,7 @@ package org.saarang.saarangsdk.Network;
 
 import android.util.Log;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.saarang.saarangsdk.Objects.PostParam;
 
@@ -29,7 +30,7 @@ public class PostRequest {
         try {
 
             //Dummy response
-            JSONObject jsonReponse = new JSONObject();
+            JSONObject jsonResponse = new JSONObject();
 
 
             //Create connection
@@ -65,10 +66,10 @@ public class PostRequest {
 
             //Check if response code is 200 OK
             int status = connection.getResponseCode();
-            jsonReponse.put("status", status);
+            jsonResponse.put("status", status);
 
             if(status != 200){
-                return jsonReponse;
+                return jsonResponse;
             }
 
             //Get Response
@@ -83,8 +84,12 @@ public class PostRequest {
             }
             rd.close();
 
-            jsonReponse.put("data", new JSONObject(response.toString()));
-            return jsonReponse;
+            try {
+                jsonResponse.put("data", new JSONObject(response.toString()));
+            } catch (JSONException e){
+                jsonResponse.put("data", new JSONObject("{ \"response\":" + response.toString() + "}"));
+            }
+            return jsonResponse;
 
         } catch (Exception e) {
             e.printStackTrace();
