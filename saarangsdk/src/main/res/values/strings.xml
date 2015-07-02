@@ -5,9 +5,9 @@
     <string name="action_settings">Settings</string>
     <string-array name="hostels">
         <item>Alakananda</item>
+        <item>Bhadra</item>
         <item>Brahmaputra</item>
         <item>Cauvery</item>
-        <item>Damodar</item>
         <item>Ganga</item>
         <item>Godavari</item>
         <item>Jamuna</item>
@@ -17,12 +17,15 @@
         <item>Narmada</item>
         <item>Pamba</item>
         <item>Saraswathi</item>
+        <item>Sabarmati</item>
         <item>Sarayu</item>
         <item>Sharavati</item>
         <item>Sindhu</item>
+        <item>Sarayu Extension</item>
         <item>Tamraparani</item>
         <item>Tapti</item>
-        <item>Sabarmati</item>
+        <item>Tunga</item>
+        <item>Day Scholar</item>
     </string-array>
 
     <string name="error_connection">Unable to connect to internet. Check your internet connection</string>
