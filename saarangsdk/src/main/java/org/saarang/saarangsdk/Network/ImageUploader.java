@@ -26,6 +26,7 @@ public class ImageUploader {
     public static JSONObject execute(String urlString, String sourceFileUri, String token){
 
         String fileName = sourceFileUri;
+        Log.d(LOG_TAG, fileName);
 
         HttpURLConnection conn = null;
         DataOutputStream dos = null;
