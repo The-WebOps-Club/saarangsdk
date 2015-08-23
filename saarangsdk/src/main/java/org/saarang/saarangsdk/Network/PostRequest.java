@@ -70,7 +70,7 @@ public class PostRequest {
             status = connection.getResponseCode();
             jsonResponse.put("status", status);
 
-            if(status != 200){
+            if(status/100 != 2){
                 return jsonResponse;
             }
 
