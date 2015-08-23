@@ -32,6 +32,7 @@ public class GetRequest {
             // URL get Request
             URL url = new URL(mUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            Log.d(LOG_TAG, url.toString());
             conn.setRequestMethod("GET");
 
             // Set header if token is given
