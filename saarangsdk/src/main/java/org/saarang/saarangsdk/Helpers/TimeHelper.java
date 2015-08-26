@@ -130,4 +130,95 @@ public class TimeHelper {
         return "";
     }
 
+    public static String getDate(String timeStamp){
+        String year = "", month = "", day = "", date;
+        int i = 0, count = 0;
+        if(timeStamp == null){
+            return "";
+        }
+        else {
+
+            while ((timeStamp.charAt(i) != 'T' || timeStamp.charAt(i) != 't') && i < (timeStamp.length() - 1)) {
+                char c = timeStamp.charAt(i);
+
+                if (count < 4 && c != '-') {
+                    year += c;
+                } else if (count < 7 && c != '-') {
+                    month += c;
+                } else if (count < 10 && c != '-') {
+                    day += c;
+                }
+                i++;
+                count++;
+            }
+            date = setMonthInFormat(month).toUpperCase() + " " + day + ", " + year;
+            return date;
+        }
+    }
+
+    public static String getTime(String timeStamp){
+        int hr = 0, min = 0;
+        if(timeStamp == null){
+            return "";
+        }
+        else
+        {
+            hr = Integer.parseInt(timeStamp.substring(11, 13));
+            min = Integer.parseInt(timeStamp.substring(14, 16));
+
+            if(hr>12){
+                return (hr-12) + ":" + min + " P.M.";
+            }
+            else if(hr == 12){
+                return (hr) + ":" + min + " P.M.";
+            }
+            else{
+                return hr + ":" + min + " A.M.";
+            }
+        }
+    }
+
+    private static String setMonthInFormat(String month){
+        switch (Integer.parseInt(month)) {
+            case 1:
+                return "January";
+
+            case 2:
+                return "February";
+
+            case 3:
+                return "March";
+
+            case 4:
+                return "April";
+
+            case 5:
+                return "May";
+
+            case 6:
+                return "June";
+
+            case 7:
+                return "July";
+
+            case 8:
+                return "August";
+
+            case 9:
+                return "September";
+
+            case 10:
+                return "October";
+
+            case 11:
+                return "November";
+
+            case 12:
+                return "December";
+
+            default:
+                return "";
+        }
+    }
+
 }
