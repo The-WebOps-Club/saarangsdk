@@ -1,7 +1,5 @@
 package org.saarang.saarangsdk.Helpers;
 
-import android.content.Context;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -16,6 +14,7 @@ public class TimeHelper {
     public TimeHelper(){
     }
 
+    private static final String TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     private static final int SECOND_MILLIS = 1000;
     private static final int MINUTE_MILLIS = 60 * SECOND_MILLIS;
     private static final int HOUR_MILLIS = 60 * MINUTE_MILLIS;
@@ -114,6 +113,11 @@ public class TimeHelper {
     }
 
 
+    public static String getTimeStamp (long time){
+        Date date = new Date(time);
+        DateFormat formatter = new SimpleDateFormat(TIME_FORMAT);
+        return formatter.format(date);
+    }
 
     //function for getting Date and Time from timestamp
     public static  String getDateCurrentTimeZone(long timestamp) {
