@@ -29,5 +29,5 @@
     </string-array>
 
     <string name="error_connection">Unable to connect to internet. Check your internet connection</string>
-    <string name="invalid_password">Invalid credential</string>
+    <string name="invalid_password">Invalid Credentials.</string>
 </resources>
