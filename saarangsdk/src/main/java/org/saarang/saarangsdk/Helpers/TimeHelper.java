@@ -11,7 +11,7 @@ public class TimeHelper {
 
     private static String LOG_TAG = "TimeHelper";
 
-    public TimeHelper(){
+    public TimeHelper() {
     }
 
     private static final String TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
@@ -19,17 +19,36 @@ public class TimeHelper {
     private static final int MINUTE_MILLIS = 60 * SECOND_MILLIS;
     private static final int HOUR_MILLIS = 60 * MINUTE_MILLIS;
     private static final int DAY_MILLIS = 24 * HOUR_MILLIS;
-
+    private static final long TIMEZONE_CORRECTION = 55 * 6 * 60 * 1000;
     //function for getting Relative time from provided time formatted string directly.
 
-    public static String getRelative(String timeString){
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        long time=1999999999;
+    public static String getTimeStampFromMillis(long millis) {
+        SimpleDateFormat formatter = new SimpleDateFormat(TIME_FORMAT);
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(millis);
+        return formatter.format(cal.getTime());
+    }
+
+    public static long getMillisFromTimeStamp(String timeStamp) {
+        DateFormat formatter = new SimpleDateFormat(TIME_FORMAT);
+        long time = 1999999999;
+        try {
+            Date date = (Date) formatter.parse(timeStamp);
+            time = date.getTime();
+        } catch (Exception e) {
+
+        }
+
+        return time;
+    }
+
+    public static String getRelative(String timeString) {
+        DateFormat formatter = new SimpleDateFormat(TIME_FORMAT);
+        long time = 1999999999;
         try {
             Date date = (Date) formatter.parse(timeString);
             time = date.getTime();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
 
         }
 
@@ -40,7 +59,7 @@ public class TimeHelper {
 
         long now = System.currentTimeMillis();
 
-        now-=5.5*60*60*1000; //correction for time zone . Decrease now by 5 : 30 hours.
+        now -= 5.5 * 60 * 60 * 1000; //correction for time zone . Decrease now by 5 : 30 hours.
 
         if (time > now || time <= 0) {
             return null;
@@ -66,13 +85,12 @@ public class TimeHelper {
     }
 
     // function for getting timestamp from the provided time.
-    public static long getTimeStamp(String time){
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+    public static long getTimeStamp(String time) {
+        DateFormat formatter = new SimpleDateFormat(TIME_FORMAT);
         try {
             Date date = (Date) formatter.parse(time);
             return date.getTime();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
 
         }
         return 1999999999;
@@ -113,15 +131,15 @@ public class TimeHelper {
     }
 
 
-    public static String getTimeStamp (long time){
+    public static String getTimeStamp(long time) {
         Date date = new Date(time);
         DateFormat formatter = new SimpleDateFormat(TIME_FORMAT);
         return formatter.format(date);
     }
 
     //function for getting Date and Time from timestamp
-    public static  String getDateCurrentTimeZone(long timestamp) {
-        try{
+    public static String getDateCurrentTimeZone(long timestamp) {
+        try {
             Calendar calendar = Calendar.getInstance();
             TimeZone tz = TimeZone.getDefault();
             calendar.setTimeInMillis(timestamp * 1000);
@@ -129,18 +147,24 @@ public class TimeHelper {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
             Date currenTimeZone = (Date) calendar.getTime();
             return sdf.format(currenTimeZone);
-        }catch (Exception e) {
+        } catch (Exception e) {
         }
         return "";
     }
 
-    public static String getDate(String timeStamp){
+    public static String getDate(String timeStamp) {
+
+        // Correcting TimeZone . Adding  5:30 hrs to the given timestamp
+        long milli = getMillisFromTimeStamp(timeStamp);
+        milli += TIMEZONE_CORRECTION;
+        timeStamp = getTimeStampFromMillis(milli);
+
+
         String year = "", month = "", day = "", date;
         int i = 0, count = 0;
-        if(timeStamp == null){
+        if (timeStamp == null) {
             return "";
-        }
-        else {
+        } else {
 
             while ((timeStamp.charAt(i) != 'T' || timeStamp.charAt(i) != 't') && i < (timeStamp.length() - 1)) {
                 char c = timeStamp.charAt(i);
@@ -160,29 +184,32 @@ public class TimeHelper {
         }
     }
 
-    public static String getTime(String timeStamp){
+    public static String getTime(String timeStamp) {
+
+        // Correcting TimeZone . Adding  5:30 hrs to the given timestamp
+        long milli = getMillisFromTimeStamp(timeStamp);
+        milli += TIMEZONE_CORRECTION;
+        timeStamp = getTimeStampFromMillis(milli);
+
+
         int hr = 0, min = 0;
-        if(timeStamp == null){
+        if (timeStamp == null) {
             return "";
-        }
-        else
-        {
+        } else {
             hr = Integer.parseInt(timeStamp.substring(11, 13));
             min = Integer.parseInt(timeStamp.substring(14, 16));
 
-            if(hr>12){
-                return (hr-12) + ":" + min + " PM";
-            }
-            else if(hr == 12){
+            if (hr > 12) {
+                return (hr - 12) + ":" + min + " PM";
+            } else if (hr == 12) {
                 return (hr) + ":" + min + " PM";
-            }
-            else{
+            } else {
                 return hr + ":" + min + " AM";
             }
         }
     }
 
-    private static String setMonthInFormat(String month){
+    private static String setMonthInFormat(String month) {
         switch (Integer.parseInt(month)) {
             case 1:
                 return "January";
@@ -224,5 +251,6 @@ public class TimeHelper {
                 return "";
         }
     }
+
 
 }
