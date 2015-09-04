@@ -151,7 +151,7 @@ public class TimeHelper {
                 i++;
                 count++;
             }
-            date = setMonthInFormat(month).toUpperCase() + " " + day + ", " + year;
+            date = setMonthInFormat(month) + " " + day + ", " + year;
             return date;
         }
     }
@@ -167,13 +167,13 @@ public class TimeHelper {
             min = Integer.parseInt(timeStamp.substring(14, 16));
 
             if(hr>12){
-                return (hr-12) + ":" + min + " P.M.";
+                return (hr-12) + ":" + min + " PM";
             }
             else if(hr == 12){
-                return (hr) + ":" + min + " P.M.";
+                return (hr) + ":" + min + " PM";
             }
             else{
-                return hr + ":" + min + " A.M.";
+                return hr + ":" + min + " AM";
             }
         }
     }
