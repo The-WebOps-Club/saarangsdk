@@ -28,7 +28,7 @@ public class PostRequest {
         URL url;
         int status = 989;
         HttpURLConnection connection = null;
-
+        Log.d(LOG_TAG, urlString);
         //Dummy response
         JSONObject jsonResponse = new JSONObject();
         try {
@@ -47,6 +47,7 @@ public class PostRequest {
             String urlParameters = null;
             if (params.size() > 0){
                 urlParameters = urlEncode(params);
+                Log.d(LOG_TAG, urlParameters);
                 connection.setRequestProperty("Content-Length", "" +
                         Integer.toString(urlParameters.getBytes().length));
             }
