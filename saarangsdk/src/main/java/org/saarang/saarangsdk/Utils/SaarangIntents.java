@@ -17,7 +17,7 @@ public class SaarangIntents {
     public static void email(Context context, String email){
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/html");
-        intent.putExtra(Intent.EXTRA_EMAIL, email);
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
         intent.putExtra(Intent.EXTRA_SUBJECT, "Saarang 2016");
         intent.putExtra(Intent.EXTRA_TEXT, "- Sent from Saarang ERP mobile app");
         intent.setType("text/plain");
