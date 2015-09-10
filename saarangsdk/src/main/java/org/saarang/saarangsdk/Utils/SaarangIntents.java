@@ -3,6 +3,7 @@ package org.saarang.saarangsdk.Utils;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.view.View;
 
 /**
  * Created by Ahammad on 12/07/15.
@@ -10,7 +11,7 @@ import android.net.Uri;
 public class SaarangIntents {
 
     public static void call(Context context, String number){
-        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + number));
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + number));
         context.startActivity(intent);
     }
 
