@@ -3,7 +3,6 @@ package org.saarang.saarangsdk.Utils;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.view.View;
 
 /**
  * Created by Ahammad on 12/07/15.
